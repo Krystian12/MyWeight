@@ -25,9 +25,6 @@ class InfoFragment : FragmentWeight() {
 
     private val viewHolderLastEntry = ViewHolderLastEntry()
 
-    private val animFadein: Animation? = null
-    private val animFadeout: Animation? = null
-
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.tabs_weight_info_fragment, container, false)
         viewHolderLastEntry.buttonAdd = view.findViewById(R.id.info_button_add) as TextView
