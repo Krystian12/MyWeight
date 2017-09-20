@@ -1,0 +1,92 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="10dp">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/frame_shadow"
+        android:gravity="right"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/info_last_entry_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:visibility="visible"
+            android:layout_toLeftOf="@+id/info_button_add"
+            android:layout_toStartOf="@id/info_button_add">
+
+            <TextView
+                style="@style/info_text_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/info_last_entry_title" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        style="@style/text_primary"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@string/data" />
+
+                    <TextView
+                        android:id="@+id/info_last_entry_date"
+                        style="@style/text_primary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="2015-12-25 04:30" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        style="@style/text_primary"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@string/weight" />
+
+                    <TextView
+                        android:id="@+id/info_last_entry_weight"
+                        style="@style/text_primary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="89 kg" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+            <TextView
+                android:id="@id/info_button_add"
+                style="@style/button_accent"
+                android:layout_width="@dimen/button_accent_width"
+                android:layout_height="@dimen/button_accent_height"
+                android:layout_alignParentRight="true"
+                android:layout_alignBottom="@id/info_last_entry_section"
+                android:text="@string/info_last_entry_add" />
+
+    </RelativeLayout>
+</LinearLayout>
+
+

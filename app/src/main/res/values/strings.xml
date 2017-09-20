@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">MyWeight</string>
+
+    <string name="tabs_weight_chart_title">Chart</string>
+    <string name="tabs_weight_history_title">History</string>
+
+    <string name="data">Data</string>
+    <string name="weight">Weight</string>
+
+    <string name="tabs_weight_info_title">Information</string>
+    <string name="info_last_entry_title">Last entry</string>
+    <string name="info_last_entry_add">Add</string>
+    <string name="info_expected">expected date</string>
+    <string name="info_target_title">Target</string>
+    <string name="info_target_change">Change</string>
+    <string name="info_trend_title">Trend</string>
+    <string name="info_trend_monthly">monthly</string>
+    <string name="info_trend_weekly">weekly</string>
+    <string name="info_dialog_new_entry">New Entry</string>
+
+    <string name="dialog_inside_done">Done</string>
+    <string name="dialog_inside_canel">Cancel</string>
+
 </resources>
