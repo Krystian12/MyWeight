@@ -1,11 +1,11 @@
-package krystian.myweight
+package krystian.myweight.ui
 
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 
-import krystian.myweight.chart.ChartFragment
-import krystian.myweight.history.HistoryFragment
-import krystian.myweight.info.InfoFragment
+import krystian.myweight.ui.chart.ChartFragment
+import krystian.myweight.ui.history.HistoryFragment
+import krystian.myweight.ui.info.InfoFragment
 
 
 /**

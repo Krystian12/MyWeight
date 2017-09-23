@@ -1,11 +1,11 @@
-package krystian.myweight.chart
+package krystian.myweight.ui.chart
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-import krystian.myweight.FragmentWeight
+import krystian.myweight.ui.FragmentWeight
 import krystian.weightmanagement.R
 
 /**

@@ -1,4 +1,4 @@
-package krystian.myweight.history
+package krystian.myweight.ui.history
 
 import android.content.Context
 import android.database.Cursor

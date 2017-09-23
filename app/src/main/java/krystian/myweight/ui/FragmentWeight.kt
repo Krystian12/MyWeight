@@ -1,4 +1,4 @@
-package krystian.myweight
+package krystian.myweight.ui
 
 import android.support.v4.app.Fragment
 

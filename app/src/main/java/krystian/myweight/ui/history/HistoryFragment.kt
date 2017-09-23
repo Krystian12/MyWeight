@@ -1,11 +1,11 @@
-package krystian.myweight.history
+package krystian.myweight.ui.history
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
-import krystian.myweight.FragmentWeight
+import krystian.myweight.ui.FragmentWeight
 import krystian.weightmanagement.R
 
 /**
