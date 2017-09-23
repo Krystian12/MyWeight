@@ -1,15 +1,10 @@
 package krystian.myweight.history
 
-import android.database.Cursor
 import android.os.Bundle
-import android.support.v4.app.LoaderManager
-import android.support.v4.content.CursorLoader
-import android.support.v4.content.Loader
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
-
 import krystian.myweight.FragmentWeight
 import krystian.weightmanagement.R
 
@@ -33,12 +28,11 @@ class HistoryFragment : FragmentWeight() {
     }
 
     private fun setupListView() {
-        historyCursorAdapter = historyCurrsorAdapter
+        historyCursorAdapter = HistoryCursorAdapter(activity, null!!, true)
+
         listView!!.adapter = historyCursorAdapter
     }
 
-    private val historyCurrsorAdapter: HistoryCursorAdapter
-        get() = HistoryCursorAdapter(activity, null!!, true)
 
     override fun getTitle(): String {
         return getString(R.string.tabs_weight_history_title)
