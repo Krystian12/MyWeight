@@ -1,0 +1,38 @@
+package krystian.myweight.ui.weight
+
+import android.content.Context
+
+import krystian.weightmanagement.R
+
+/**
+ * Created by Krystian on 2015-12-30.
+ */
+abstract class Weight {
+
+    var grams: Long = 0
+
+    enum class Unit (val valueStatus: Int, val positionInArryaStringWeightUnit: Int) {
+        KILOGRAM(0, 0),
+        FUNT(1, 1),
+        STONE(2, 2);
+    }
+
+    abstract fun getValue(): Double
+    abstract fun setValue(value: Double)
+    abstract fun getWeightValueFormat(): String
+    abstract fun setWeightValueFormat(weightFormat: String)
+    abstract fun getWeightValueWithUnitShort(context: Context): String
+    abstract fun getUnit(): Unit
+
+    fun getUnitShort(context: Context): String {
+        return Weight.getUnitShort(context, getUnit())
+    }
+
+    companion object {
+
+        internal fun getUnitShort(context: Context, unit: Unit): String {
+            val position = unit.positionInArryaStringWeightUnit
+            return context.resources.getStringArray(R.array.weight_units_short)[position]
+        }
+    }
+}

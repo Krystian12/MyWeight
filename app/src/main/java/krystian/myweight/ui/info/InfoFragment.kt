@@ -5,15 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-
 import krystian.myweight.ui.FragmentWeight
+import krystian.myweight.ui.dialogs.DialogChangeWeight
+import krystian.myweight.ui.weight.WeightManager
+import krystian.myweight.unit.DateFormater
 import krystian.weightmanagement.R
+
 
 /**
  * Created by Krystian on 2015-12-26.
  */
 class InfoFragment : FragmentWeight() {
-
 
     internal inner class ViewHolderLastEntry {
         var buttonAdd: TextView? = null
@@ -33,7 +35,8 @@ class InfoFragment : FragmentWeight() {
     }
 
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         viewHolderLastEntry.buttonAdd!!.setOnClickListener(onClickListenerButtonAdd)
         setupWeight()
 
@@ -44,27 +47,26 @@ class InfoFragment : FragmentWeight() {
         setLastWeight()
     }
 
-    fun setLastWeight() {
-        //Todo
-        //        EntrieWeight entrieWeight = WeightManager.getInstance().getLastWeight();
-        //
-        //        if(entrieWeight == null) {
-        //            viewHolderLastEntry.weight.setText("---");
-        //            viewHolderLastEntry.date.setText("---");
-        //        }else {
-        //            viewHolderLastEntry.weight.setText(entrieWeight.getWeight().getWeightValuetWithUnitShort(getActivity()));
-        //            viewHolderLastEntry.date.setText(DateFormater.getDateTimeDefault(getActivity(), entrieWeight.getDateWeight()));
-        //        }
+    private fun setLastWeight() {
+        val weightItem = WeightManager.getLastWeight(context)
+
+        if (weightItem == null) {
+            viewHolderLastEntry.weight!!.text = "---"
+            viewHolderLastEntry.date!!.text = "---"
+        } else {
+            viewHolderLastEntry.weight!!.text = weightItem!!.getWeight().getWeightValueWithUnitShort(getActivity())
+            viewHolderLastEntry.date!!.text = DateFormater.getDateTimeDefault(getActivity(), weightItem!!.timeMeasurement)
+        }
     }
 
-    override fun getTitle(): String {
-        return getString(R.string.tabs_weight_info_title)
-    }
+    override fun getTitle(): String = getString(R.string.tabs_weight_info_title)
 
     private val onClickListenerButtonAdd: View.OnClickListener
         get() = View.OnClickListener { showDialogAddWeight() }
 
     private fun showDialogAddWeight() {
-        //Todo
+        val dialogChangeWeight = DialogChangeWeight()
+        dialogChangeWeight.show(fragmentManager, "dialogChangeWeight")
     }
+
 }
