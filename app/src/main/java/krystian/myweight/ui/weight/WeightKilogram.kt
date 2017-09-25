@@ -6,7 +6,11 @@ import android.content.Context
  * Created by Krystian on 2015-12-30.
  */
 
-internal open class WeightKilogram : Weight() {
+internal open class WeightKilogram : Weight {
+
+    constructor():super()
+
+    constructor(grams: Long): super(grams)
 
     override fun setValue(value: Double) {
         grams = Math.round(value * 1000)

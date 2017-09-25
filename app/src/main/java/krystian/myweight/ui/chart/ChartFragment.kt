@@ -4,9 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import krystian.myweight.R
 import krystian.myweight.ui.FragmentWeight
-import krystian.weightmanagement.R
 
 /**
  * Created by Krystian on 2015-12-26.

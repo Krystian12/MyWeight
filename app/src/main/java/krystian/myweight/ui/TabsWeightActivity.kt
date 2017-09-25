@@ -8,8 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 
 import com.astuetz.PagerSlidingTabStrip
-
-import krystian.weightmanagement.R
+import krystian.myweight.R
 
 
 class TabsWeightActivity : AppCompatActivity() {

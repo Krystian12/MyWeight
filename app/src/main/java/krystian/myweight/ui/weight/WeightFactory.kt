@@ -15,6 +15,14 @@ object WeightFactory {
         }
     }
 
+    fun getWeight(unit: Weight.Unit, grams:Long): Weight {
+        return when (unit) {
+            Weight.Unit.KILOGRAM -> WeightKilogram(grams)
+            Weight.Unit.FUNT -> WeightFunt(grams)
+            Weight.Unit.STONE -> WeightStone(grams)
+        }
+    }
+
     fun getWeightShort(context: Context, unitShort: String): Weight {
         return when {
             Weight.getUnitShort(context, Weight.Unit.KILOGRAM).equals(unitShort) -> WeightKilogram()

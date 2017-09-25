@@ -3,8 +3,11 @@ package krystian.myweight.ui.weight
 /**
  * Created by Krystian on 2016-01-03.
  */
-internal open class WeightFunt : WeightKilogram() {
+internal open class WeightFunt : WeightKilogram {
 
+    constructor():super()
+
+    constructor(grams: Long): super(grams)
 
     private val conversionGramsToFunt = 0.0022046
 

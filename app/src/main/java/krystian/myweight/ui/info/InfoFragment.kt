@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import krystian.myweight.R
 import krystian.myweight.ui.FragmentWeight
 import krystian.myweight.ui.dialogs.DialogChangeWeight
 import krystian.myweight.ui.weight.WeightManager
 import krystian.myweight.unit.DateFormater
-import krystian.weightmanagement.R
 
 
 /**

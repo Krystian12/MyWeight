@@ -7,15 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import krystian.myweight.R
 import krystian.myweight.database.WeightItem
 import krystian.myweight.ui.weight.WeightManager
 import krystian.myweight.unit.DateFormater
-import krystian.weightmanagement.R
 
 /**
  * Created by Krystian on 2016-01-12.
  */
-class HistoryCursorAdapter(private val context: Context, c: Cursor, autoRequery: Boolean) : CursorAdapter(context, c, autoRequery) {
+class HistoryCursorAdapter(private val context: Context, c: Cursor?, autoRequery: Boolean) : CursorAdapter(context, c, autoRequery) {
 
     private inner class ViewHolder {
         var dateDay: TextView? = null

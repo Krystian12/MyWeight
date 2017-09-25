@@ -2,6 +2,7 @@ package krystian.myweight.ui
 
 import android.app.Application
 import com.raizlabs.android.dbflow.config.FlowConfig
+import com.raizlabs.android.dbflow.config.FlowLog
 import com.raizlabs.android.dbflow.config.FlowManager
 import krystian.myweight.unit.SharedPreferencesHelper
 
@@ -13,7 +14,8 @@ class AppApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        FlowManager.init(FlowConfig.Builder(this).build())
+        FlowLog.setMinimumLoggingLevel(FlowLog.Level.V);
         SharedPreferencesHelper.init(this)
-        FlowManager.init(FlowConfig.builder(this).build())
     }
 }

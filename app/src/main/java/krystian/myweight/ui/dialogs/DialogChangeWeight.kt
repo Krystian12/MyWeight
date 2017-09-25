@@ -7,12 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import krystian.myweight.R
 import krystian.myweight.database.WeightItem
 import krystian.myweight.ui.weight.Weight
 import krystian.myweight.ui.weight.WeightFactory
 import krystian.myweight.ui.weight.WeightManager
 import krystian.myweight.unit.DateFormater
-import krystian.weightmanagement.R
 import java.util.*
 
 /**
@@ -41,9 +41,10 @@ class DialogChangeWeight : DialogFragment() {
         }
 
     private var unit: Weight.Unit = WeightManager.getDefaultUnit()
-
-    private var dialogInsideChangeWeightListener: DialogInsideChangeWeightListener? = null
-
+        set(unit) {
+            field = unit
+            viewHolder.weightUnit!!.setSelection(unit.positionInArryaStringWeightUnit)
+        }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?):
             View = inflater!!.inflate(R.layout.dialog_change_weight, container, false)
@@ -65,8 +66,7 @@ class DialogChangeWeight : DialogFragment() {
 
     private fun intButtons() {
         viewHolder.buttonDone!!.setOnClickListener { done() }
-        viewHolder.buttonCancel!!.setOnClickListener { cancel() }
-
+        viewHolder.buttonCancel!!.setOnClickListener { dismiss() }
     }
 
     private fun intWeightUnit() {
@@ -74,8 +74,6 @@ class DialogChangeWeight : DialogFragment() {
         unitAdapter = ArrayAdapter(activity, android.R.layout.simple_spinner_item, arrayStringUnitsWeight)
         unitAdapter!!.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         viewHolder.weightUnit!!.adapter = unitAdapter
-
-        setUnit(Weight.Unit.KILOGRAM)
 
         viewHolder.weightUnit!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
@@ -115,41 +113,18 @@ class DialogChangeWeight : DialogFragment() {
         viewHolder.weightValue!!.setText(weight.getWeightValueFormat())
     }
 
-    private fun setUnit(unit: Weight.Unit) {
-        this.unit = unit
-        viewHolder.weightUnit!!.setSelection(unit.positionInArryaStringWeightUnit)
-    }
-
     fun done() {
-        if (dialogInsideChangeWeightListener != null) {
-            val weightItem = WeightItem()
-            val weight = WeightFactory.getWeight(getUnit())
-            weight.setWeightValueFormat(viewHolder.weightValue!!.text.toString())
-            weightItem.setWeight(weight)
+        val weightItem = WeightItem()
+        val weight = WeightFactory.getWeight(getUnit())
+        weight.setWeightValueFormat(viewHolder.weightValue!!.text.toString())
+        weightItem.setWeight(weight)
+        weightItem.timeChange = Calendar.getInstance().time
+        weightItem.timeMeasurement = date
 
-            weightItem.timeMeasurement = date
-
-            dialogInsideChangeWeightListener!!.onDone(weightItem)
-        }
+        WeightManager.addEntries(weightItem)
+        dismiss()
     }
 
-    private fun getUnit(): Weight.Unit {
-        return unit
-    }
+    private fun getUnit(): Weight.Unit = unit
 
-    fun cancel() {
-        if (dialogInsideChangeWeightListener != null) {
-            dialogInsideChangeWeightListener!!.onCancel()
-        }
-
-    }
-
-    fun setDialogInsideChangeWeightListener(dialogInsideChangeWeightListener: DialogInsideChangeWeightListener) {
-        this.dialogInsideChangeWeightListener = dialogInsideChangeWeightListener
-    }
-
-    interface DialogInsideChangeWeightListener {
-        fun onDone(weightItem: WeightItem)
-        fun onCancel()
-    }
 }

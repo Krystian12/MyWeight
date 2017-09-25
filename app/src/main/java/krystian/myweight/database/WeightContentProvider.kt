@@ -6,7 +6,9 @@ import android.content.UriMatcher
 import android.database.Cursor
 import android.database.SQLException
 import android.net.Uri
+import android.util.Log
 import com.raizlabs.android.dbflow.annotation.ConflictAction
+import com.raizlabs.android.dbflow.config.FlowConfig
 import com.raizlabs.android.dbflow.config.FlowManager
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper
 
@@ -18,15 +20,17 @@ class WeightContentProvider : ContentProvider() {
 
     companion object {
 
-        internal val PROVIDER_NAME = "krystian.provider.weight"
-        private val PATH_ALL = "all"
-        private val PATH_ALL_ORDER_BY_DATE_WEIGHT = "order_by_date_weight"
+        val TAG: String = "WeightContentProvider"
 
-        internal val URL_ALL = "content://$PROVIDER_NAME/$PATH_ALL"
-        internal val URL_ALL_ORDER_BY_DATE_WEIGHT = "content://$PROVIDER_NAME/$PATH_ALL_ORDER_BY_DATE_WEIGHT"
+        internal const val AUTHORITY = "krystian.myweight.provider.weight"
 
-        val CONTENT_URI_ALL = Uri.parse(URL_ALL)
-        val CONTENT_URI_ALL_ORDER_BY_DATE_WEIGHT = Uri.parse(URL_ALL_ORDER_BY_DATE_WEIGHT)
+        internal const val PATH_ALL = "all/"
+        internal const val PATH_ALL_ORDER_BY_DATE_WEIGHT = "order_by_date_weight/"
+
+        internal const val BASE_CONTENT_URI = "content://"
+
+        internal const val URL_ALL = "$BASE_CONTENT_URI$AUTHORITY/$PATH_ALL"
+        internal const val URL_ALL_ORDER_BY_DATE_WEIGHT = "$BASE_CONTENT_URI$AUTHORITY/$PATH_ALL_ORDER_BY_DATE_WEIGHT"
 
         internal val ALL = 1
         internal val ALL_ORDER_BY_DATE_WEIGHT = 2
@@ -35,8 +39,8 @@ class WeightContentProvider : ContentProvider() {
 
         init {
             uriMatcher = UriMatcher(UriMatcher.NO_MATCH)
-            uriMatcher.addURI(PROVIDER_NAME, PATH_ALL, ALL)
-            uriMatcher.addURI(PROVIDER_NAME, PATH_ALL_ORDER_BY_DATE_WEIGHT, ALL_ORDER_BY_DATE_WEIGHT)
+            uriMatcher.addURI(AUTHORITY, PATH_ALL, ALL)
+            uriMatcher.addURI(AUTHORITY, PATH_ALL_ORDER_BY_DATE_WEIGHT, ALL_ORDER_BY_DATE_WEIGHT)
         }
 
 
@@ -66,6 +70,8 @@ class WeightContentProvider : ContentProvider() {
     private var db: DatabaseWrapper? = null
 
     override fun onCreate(): Boolean {
+        Log.d(TAG, "onCreate")
+        FlowManager.init(FlowConfig.builder(context).build())
         val dbHelper = FlowManager.getDatabase(AppDatabase.NAME)
 
         /**
@@ -77,7 +83,7 @@ class WeightContentProvider : ContentProvider() {
     }
 
     override fun query(uri: Uri, projection: Array<String>?, selection: String?, selectionArgs: Array<String>?, sortOrder: String?): Cursor? {
-
+        Log.d(TAG, "WeightContentProvider query")
         var cursor: Cursor?
         when (uriMatcher.match(uri)) {
             ALL -> cursor = db!!.query(WeightItem.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder)
@@ -98,14 +104,15 @@ class WeightContentProvider : ContentProvider() {
         /**
          * Get all records
          */
-            ALL -> return "vnd.android.cursor.dir/krystian.provider.weight"
-            ALL_ORDER_BY_DATE_WEIGHT -> return "vnd.android.cursor.dir/krystian.provider.weight_order"
+            ALL -> return URL_ALL
+            ALL_ORDER_BY_DATE_WEIGHT -> return URL_ALL_ORDER_BY_DATE_WEIGHT
 
             else -> throw IllegalArgumentException("Unsupported URI: " + uri)
         }
     }
 
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
+        Log.d(TAG, "WeightContentProvider insert")
         val adapter = FlowManager.getModelAdapter(FlowManager.getTableClassForName(AppDatabase.NAME, WeightItem.TABLE_NAME))
         val conflictAction = ConflictAction.getSQLiteDatabaseAlgorithmInt(adapter.insertOnConflictAction)
         val rowID = db!!.insertWithOnConflict(WeightItem.TABLE_NAME, "", values!!, conflictAction)

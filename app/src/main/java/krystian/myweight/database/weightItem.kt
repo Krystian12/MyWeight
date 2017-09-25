@@ -3,8 +3,10 @@ package krystian.myweight.database
 import com.raizlabs.android.dbflow.annotation.Column
 import com.raizlabs.android.dbflow.annotation.PrimaryKey
 import com.raizlabs.android.dbflow.annotation.Table
+import com.raizlabs.android.dbflow.config.FlowManager
 import com.raizlabs.android.dbflow.structure.BaseModel
 import krystian.myweight.ui.weight.Weight
+import krystian.myweight.ui.weight.WeightFactory
 import krystian.myweight.ui.weight.WeightManager
 import java.util.*
 
@@ -14,8 +16,9 @@ import java.util.*
 
 @Table(name = WeightItem.TABLE_NAME, database = AppDatabase::class)
 class WeightItem : BaseModel() {
+
     companion object {
-        const val TABLE_NAME: String = "WeightItem"
+        const val TABLE_NAME: String = "WeightItems"
         const val _ID: String = "_id"
         const val TIME_ADD: String = "TIME_ADD"
         const val TIME_CHANGE: String = "TIME_CHANGE"
@@ -28,7 +31,7 @@ class WeightItem : BaseModel() {
 
     @PrimaryKey(autoincrement = true)
     @Column(name = _ID)
-    var id: Long = 0
+    var id: Long = -1
 
     @Column(name = TIME_ADD)
     var timeAdd: Date = Calendar.getInstance().time
@@ -69,4 +72,36 @@ class WeightItem : BaseModel() {
     fun getWeight(): Weight {
         return weight
     }
+
+//    override fun getInsertUri(): Uri = AppDatabase.WeightProvider.CONTENT_URI_ALL
+//
+//    override fun getDeleteUri(): Uri = AppDatabase.WeightProvider.CONTENT_URI_ALL
+//
+//    override fun getQueryUri(): Uri = AppDatabase.WeightProvider.CONTENT_URI_ALL
+//
+//    override fun getUpdateUri(): Uri = AppDatabase.WeightProvider.CONTENT_URI_ALL
+
+    override fun save(): Boolean {
+        weightToDisplayInKilograms = WeightFactory.getWeight(Weight.Unit.KILOGRAM, weightOfGram)
+                .getWeightValueWithUnitShort(FlowManager.getContext())
+
+        weightToDisplayInFunt = WeightFactory.getWeight(Weight.Unit.FUNT, weightOfGram)
+                .getWeightValueWithUnitShort(FlowManager.getContext())
+
+        weightToDisplayInStone = WeightFactory.getWeight(Weight.Unit.STONE, weightOfGram)
+                .getWeightValueWithUnitShort(FlowManager.getContext())
+
+        return super.save()
+    }
+
+    override fun toString(): String =
+            "WeightItem(id=$id, " +
+                    "timeAdd=$timeAdd, " +
+                    "timeChange=$timeChange, " +
+                    "timeMeasurement=$timeMeasurement, " +
+                    "weightOfGram=$weightOfGram," +
+                    " weightToDisplayInKilograms='$weightToDisplayInKilograms'," +
+                    " weightToDisplayInFunt='$weightToDisplayInFunt', " +
+                    "weightToDisplayInStone='$weightToDisplayInStone', " +
+                    "weight=$weight)"
 }
