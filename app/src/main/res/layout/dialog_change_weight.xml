@@ -46,7 +46,7 @@
                     android:minWidth="30dp"
                     android:layout_gravity="center_vertical"
                     android:background="@drawable/selector_edit_text"
-                    android:inputType="number|phone"
+                    android:inputType="numberDecimal"
                     android:numeric="decimal"
                     android:digits="1234567890."
                     android:text=""/>

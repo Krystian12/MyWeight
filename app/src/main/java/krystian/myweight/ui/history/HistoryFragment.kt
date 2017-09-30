@@ -44,8 +44,8 @@ class HistoryFragment : FragmentWeight(), LoaderManager.LoaderCallbacks<Cursor> 
     override fun getTitle(): String = getString(R.string.tabs_weight_history_title)
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
-        return CursorLoader(activity, AppDatabase.WeightProvider.CONTENT_URI_ALL,
-                WeightContentProvider.COLUMNS_ALL,
+        return CursorLoader(activity, AppDatabase.WeightProvider.CONTENT_URI_ALL_ORDER_BY_DATE_WEIGHT,
+                AppDatabase.WeightProvider.COLUMNS_ALL,
                 null, null, null)
     }
 

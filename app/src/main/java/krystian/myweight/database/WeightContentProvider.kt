@@ -43,27 +43,6 @@ class WeightContentProvider : ContentProvider() {
             uriMatcher.addURI(AUTHORITY, PATH_ALL_ORDER_BY_DATE_WEIGHT, ALL_ORDER_BY_DATE_WEIGHT)
         }
 
-
-        val COLUMNS_ALL = arrayOf<String>(
-                WeightItem._ID,
-                WeightItem.TIME_ADD,
-                WeightItem.TIME_CHANGE,
-                WeightItem.TIME_MEASUREMENT,
-                WeightItem.WEIGHT_OF_GRAM,
-                WeightItem.WEIGHT_TO_DISPLAY_IN_KILOGRAMS,
-                WeightItem.WEIGHT_TO_DISPLAY_IN_FUNT,
-                WeightItem.WEIGHT_TO_DISPLAY_IN_STONE
-        )
-
-        val KEY_INT_ID = 0
-        val KEY_INT_TIME_ADD = KEY_INT_ID + 1
-        val KEY_INT_TIME_CHANGE = KEY_INT_TIME_ADD + 1
-        val KEY_INT_TIME_MEASUREMENT = KEY_INT_TIME_CHANGE + 1
-        val KEY_INT_WEIGHT_OF_GRAM = KEY_INT_TIME_MEASUREMENT + 1
-        val KEY_INT_WEIGHT_TO_DISPLAY_IN_KILOGRAMS = KEY_INT_WEIGHT_OF_GRAM + 1
-        val KEY_INT_WEIGHT_TO_DISPLAY_IN_FUNT = KEY_INT_WEIGHT_TO_DISPLAY_IN_KILOGRAMS + 1
-        val KEY_INT_WEIGHT_TO_DISPLAY_IN_STONE = KEY_INT_WEIGHT_TO_DISPLAY_IN_FUNT + 1
-
     }
 
 
@@ -112,24 +91,31 @@ class WeightContentProvider : ContentProvider() {
     }
 
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
-        Log.d(TAG, "WeightContentProvider insert")
-        val adapter = FlowManager.getModelAdapter(FlowManager.getTableClassForName(AppDatabase.NAME, WeightItem.TABLE_NAME))
-        val conflictAction = ConflictAction.getSQLiteDatabaseAlgorithmInt(adapter.insertOnConflictAction)
-        val rowID = db!!.insertWithOnConflict(WeightItem.TABLE_NAME, "", values!!, conflictAction)
+        Log.d(TAG, "insert UriL " + uri.toString())
+//        val adapter = FlowManager.getModelAdapter(FlowManager.getTableClassForName(AppDatabase.NAME, WeightItem.TABLE_NAME))
+//        val conflictAction = ConflictAction.getSQLiteDatabaseAlgorithmInt(adapter.insertOnConflictAction)
+//        val rowID = db!!.insertWithOnConflict(WeightItem.TABLE_NAME, "", values!!, conflictAction)
 
-        if (rowID > 0) {
-            context!!.contentResolver.notifyChange(uri, null)
+//        if (rowID > 0) {
+        notifyChange()
             return uri
-        }
-        throw SQLException("Failed to add a record into " + uri)
+//        }
+//        throw SQLException("Failed to add a record into " + uri)
     }
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
+        Log.d(TAG, "WeightContentProvider delete")
         return 0
     }
 
     override fun update(uri: Uri, values: ContentValues?, selection: String?, selectionArgs: Array<String>?): Int {
+        Log.d(TAG, "WeightContentProvider update")
         return 0
+    }
+
+    private fun notifyChange(){
+        context!!.contentResolver.notifyChange(AppDatabase.WeightProvider.CONTENT_URI_ALL, null)
+        context!!.contentResolver.notifyChange(AppDatabase.WeightProvider.CONTENT_URI_ALL_ORDER_BY_DATE_WEIGHT, null)
     }
 
 }

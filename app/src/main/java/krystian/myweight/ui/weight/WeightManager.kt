@@ -24,33 +24,19 @@ object WeightManager {
     fun getLastWeight(context: Context): WeightItem? {
         val contentResolver = context.contentResolver
 
-        val cursor = contentResolver.query(AppDatabase.WeightProvider.CONTENT_URI_ALL, null, null, null, null)
+        val cursor = contentResolver.query(AppDatabase.WeightProvider.CONTENT_URI_ALL_ORDER_BY_DATE_WEIGHT, null, null, null, null)
 
         var weightItem: WeightItem? = null
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
-                weightItem = loadEntrie(cursor)
+                weightItem = WeightItem(cursor)
             }
         }
 
         return weightItem
     }
 
-    fun loadEntrie(cursor: Cursor): WeightItem {
-        val weightItem = WeightItem()
-
-        weightItem.id = cursor.getLong(WeightContentProvider.KEY_INT_ID)
-        weightItem.timeAdd = Date(cursor.getLong(WeightContentProvider.KEY_INT_TIME_ADD))
-        weightItem.timeChange = Date(cursor.getLong(WeightContentProvider.KEY_INT_TIME_CHANGE))
-        weightItem.timeMeasurement = Date(cursor.getLong(WeightContentProvider.KEY_INT_TIME_MEASUREMENT))
-
-
-        Log.d(TAG, "loadEntrie: " + weightItem.toString())
-
-        return weightItem
-
-    }
 
     fun getDefaultWeight(): Weight {
         val unitStatusValue = SharedPreferencesHelper.getInt(SharedPreferencesHelper.KEY_START_UNIT)

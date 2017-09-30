@@ -14,8 +14,8 @@ class AppApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        FlowManager.init(FlowConfig.Builder(this).build())
-        FlowLog.setMinimumLoggingLevel(FlowLog.Level.V);
+        //FlowManager.init(FlowConfig.Builder(this).build())
+        //FlowLog.setMinimumLoggingLevel(FlowLog.Level.V);
         SharedPreferencesHelper.init(this)
     }
 }

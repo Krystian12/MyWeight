@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import krystian.myweight.R
 import krystian.myweight.database.WeightItem
-import krystian.myweight.ui.weight.WeightManager
 import krystian.myweight.unit.DateFormater
 
 /**
@@ -38,14 +37,14 @@ class HistoryCursorAdapter(private val context: Context, c: Cursor?, autoRequery
 
     override fun bindView(view: View, context: Context, cursor: Cursor) {
         val viewHolder = view.tag as ViewHolder
-        val entrieWeight = getEntrieWeight(cursor)
+        val entrieWeight = getEntriesWeight(cursor)
 
         setDate(viewHolder, entrieWeight)
         setWeight(viewHolder, entrieWeight)
     }
 
-    private fun getEntrieWeight(cursor: Cursor): WeightItem {
-        return WeightManager.loadEntrie(cursor)
+    private fun getEntriesWeight(cursor: Cursor): WeightItem {
+        return WeightItem(cursor)
     }
 
     private fun setDate(viewHolder: ViewHolder, entrieWeight: WeightItem) {

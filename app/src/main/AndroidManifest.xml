@@ -19,7 +19,7 @@
         </activity>
 
         <provider
-            android:name=".database.AppDatabase_Provider"
+            android:name=".database.WeightContentProvider"
             android:authorities="krystian.myweight.provider.weight" />
     </application>
 

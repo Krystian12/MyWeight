@@ -1,11 +1,15 @@
 package krystian.myweight.ui.info
 
+import android.database.ContentObserver
+import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import krystian.myweight.R
+import krystian.myweight.database.AppDatabase
 import krystian.myweight.ui.FragmentWeight
 import krystian.myweight.ui.dialogs.DialogChangeWeight
 import krystian.myweight.ui.weight.WeightManager
@@ -40,7 +44,22 @@ class InfoFragment : FragmentWeight() {
         viewHolderLastEntry.buttonAdd!!.setOnClickListener(onClickListenerButtonAdd)
         setupWeight()
 
+        context.contentResolver.registerContentObserver(
+                AppDatabase.WeightProvider.CONTENT_URI_ALL_ORDER_BY_DATE_WEIGHT,
+                true, contentObserver
+                )
+
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    var contentObserver = object: ContentObserver(Handler()){
+        override fun onChange(selfChange: Boolean) {
+            setLastWeight()
+        }
+
+        override fun onChange(selfChange: Boolean, uri: Uri?) {
+            setLastWeight()
+        }
     }
 
     fun setupWeight() {
@@ -54,7 +73,7 @@ class InfoFragment : FragmentWeight() {
             viewHolderLastEntry.weight!!.text = "---"
             viewHolderLastEntry.date!!.text = "---"
         } else {
-            viewHolderLastEntry.weight!!.text = weightItem!!.getWeight().getWeightValueWithUnitShort(getActivity())
+            viewHolderLastEntry.weight!!.text = weightItem.getWeightWithUnit()
             viewHolderLastEntry.date!!.text = DateFormater.getDateTimeDefault(getActivity(), weightItem!!.timeMeasurement)
         }
     }

@@ -1,6 +1,7 @@
 package krystian.myweight.ui.weight
 
 import android.content.Context
+import java.util.*
 
 /**
  * Created by Krystian on 2015-12-30.
@@ -8,9 +9,9 @@ import android.content.Context
 
 internal open class WeightKilogram : Weight {
 
-    constructor():super()
+    constructor() : super()
 
-    constructor(grams: Long): super(grams)
+    constructor(grams: Long) : super(grams)
 
     override fun setValue(value: Double) {
         grams = Math.round(value * 1000)
@@ -25,7 +26,7 @@ internal open class WeightKilogram : Weight {
     }
 
     override fun getWeightValueFormat(): String {
-       return String.format("%.2f", getValue())
+        return String.format(Locale.ENGLISH, "%.2f", getValue())
     }
 
     override fun getWeightValueWithUnitShort(context: Context): String {
