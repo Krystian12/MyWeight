@@ -44,15 +44,23 @@ class InfoFragment : FragmentWeight() {
         viewHolderLastEntry.buttonAdd!!.setOnClickListener(onClickListenerButtonAdd)
         setupWeight()
 
-        context.contentResolver.registerContentObserver(
-                AppDatabase.WeightProvider.CONTENT_URI_ALL_ORDER_BY_DATE_WEIGHT,
-                true, contentObserver
-                )
-
         super.onViewCreated(view, savedInstanceState)
     }
 
-    var contentObserver = object: ContentObserver(Handler()){
+    override fun onStart() {
+        super.onStart()
+        context.contentResolver.registerContentObserver(
+                AppDatabase.WeightProvider.CONTENT_URI_ALL_ORDER_BY_DATE_WEIGHT,
+                true, contentObserver
+        )
+    }
+
+    override fun onStop() {
+        super.onStop()
+        context.contentResolver.unregisterContentObserver(contentObserver)
+    }
+
+    var contentObserver = object : ContentObserver(Handler()) {
         override fun onChange(selfChange: Boolean) {
             setLastWeight()
         }
