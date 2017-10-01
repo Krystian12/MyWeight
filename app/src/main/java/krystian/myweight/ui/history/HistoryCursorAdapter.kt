@@ -37,14 +37,19 @@ class HistoryCursorAdapter(private val context: Context, c: Cursor?, autoRequery
 
     override fun bindView(view: View, context: Context, cursor: Cursor) {
         val viewHolder = view.tag as ViewHolder
-        val entrieWeight = getEntriesWeight(cursor)
+        val entrieWeight = getWeightItemFromCursor(cursor)
 
         setDate(viewHolder, entrieWeight)
         setWeight(viewHolder, entrieWeight)
     }
 
-    private fun getEntriesWeight(cursor: Cursor): WeightItem {
+    private fun getWeightItemFromCursor(cursor: Cursor): WeightItem {
         return WeightItem(cursor)
+    }
+
+    fun getWeightItem(position : Int): WeightItem{
+        var cursor : Cursor = getItem(position) as Cursor
+        return getWeightItemFromCursor(cursor)
     }
 
     private fun setDate(viewHolder: ViewHolder, entrieWeight: WeightItem) {

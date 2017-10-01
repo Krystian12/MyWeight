@@ -11,8 +11,8 @@ import android.view.ViewGroup
 import android.widget.ListView
 import krystian.myweight.R
 import krystian.myweight.database.AppDatabase
-import krystian.myweight.database.WeightContentProvider
 import krystian.myweight.ui.FragmentWeight
+import krystian.myweight.ui.dialogs.DialogChangeWeight
 
 /**
  * Created by Krystian on 2015-12-26.
@@ -37,9 +37,18 @@ class HistoryFragment : FragmentWeight(), LoaderManager.LoaderCallbacks<Cursor> 
         historyCursorAdapter = HistoryCursorAdapter(activity, null, true)
         listView!!.adapter = historyCursorAdapter
 
+        listView!!.setOnItemClickListener { parent, view, position, id ->
+            showDialogChangeWeight(position)
+        }
+
         loaderManager.initLoader(0, null, this)
     }
 
+    private fun showDialogChangeWeight(position: Int) {
+        val weightItem = historyCursorAdapter!!.getWeightItem(position)
+        val dialogChangeWeight = DialogChangeWeight.newInstance(weightItem)
+        dialogChangeWeight.show(fragmentManager, "dialogChangeWeight")
+    }
 
     override fun getTitle(): String = getString(R.string.tabs_weight_history_title)
 

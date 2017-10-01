@@ -92,7 +92,7 @@ class InfoFragment : FragmentWeight() {
         get() = View.OnClickListener { showDialogAddWeight() }
 
     private fun showDialogAddWeight() {
-        val dialogChangeWeight = DialogChangeWeight()
+        val dialogChangeWeight = DialogChangeWeight.newInstance()
         dialogChangeWeight.show(fragmentManager, "dialogChangeWeight")
     }
 

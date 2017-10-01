@@ -4,6 +4,7 @@ import android.app.Application
 import com.raizlabs.android.dbflow.config.FlowConfig
 import com.raizlabs.android.dbflow.config.FlowLog
 import com.raizlabs.android.dbflow.config.FlowManager
+import krystian.myweight.database.DatabaseUtil
 import krystian.myweight.unit.SharedPreferencesHelper
 
 /**
@@ -17,5 +18,7 @@ class AppApplication : Application() {
         //FlowManager.init(FlowConfig.Builder(this).build())
         //FlowLog.setMinimumLoggingLevel(FlowLog.Level.V);
         SharedPreferencesHelper.init(this)
+
+        DatabaseUtil.copyDatabaseToExtStg(this)
     }
 }

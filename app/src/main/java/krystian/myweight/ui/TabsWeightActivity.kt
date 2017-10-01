@@ -1,12 +1,13 @@
 package krystian.myweight.ui
 
+import android.annotation.TargetApi
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
-
 import com.astuetz.PagerSlidingTabStrip
 import krystian.myweight.R
 
@@ -15,8 +16,24 @@ class TabsWeightActivity : AppCompatActivity() {
 
     private var pagerAdapter: PagerAdapter? = null
 
+    @TargetApi(23)
+    protected fun askPermissions() {
+        val permissions = arrayOf("android.permission.READ_EXTERNAL_STORAGE", "android.permission.WRITE_EXTERNAL_STORAGE")
+        val requestCode = 200
+        requestPermissions(permissions, requestCode)
+    }
+
+    protected fun shouldAskPermissions(): Boolean {
+        return Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (shouldAskPermissions()) {
+            askPermissions()
+        }
+
         setContentView(R.layout.tabs_weight_activity)
 
         val myToolbar = findViewById(R.id.toolbar) as Toolbar

@@ -2,15 +2,13 @@ package krystian.myweight.database
 
 import android.database.Cursor
 import android.net.Uri
+import android.os.Parcel
+import android.os.Parcelable
 import android.util.Log
 import com.raizlabs.android.dbflow.annotation.Column
 import com.raizlabs.android.dbflow.annotation.PrimaryKey
 import com.raizlabs.android.dbflow.annotation.Table
-import com.raizlabs.android.dbflow.annotation.provider.ContentUri
-import com.raizlabs.android.dbflow.annotation.provider.TableEndpoint
 import com.raizlabs.android.dbflow.config.FlowManager
-import com.raizlabs.android.dbflow.structure.BaseModel
-import com.raizlabs.android.dbflow.structure.provider.BaseProviderModel
 import com.raizlabs.android.dbflow.structure.provider.BaseSyncableProviderModel
 import krystian.myweight.ui.weight.Weight
 import krystian.myweight.ui.weight.WeightFactory
@@ -22,27 +20,11 @@ import java.util.*
  */
 
 @Table(name = WeightItem.TABLE_NAME, database = AppDatabase::class)
-class WeightItem : BaseSyncableProviderModel {
-
+class WeightItem : BaseSyncableProviderModel, Parcelable {
     constructor() : super()
 
     constructor(cursor: Cursor) : super() {
         loadEntries(cursor)
-    }
-
-    companion object {
-        private const val TAG = "WeightItem"
-        private const val URL_ALL = WeightContentProvider.URL_ALL
-
-        const val TABLE_NAME: String = "WeightItems"
-        const val _ID: String = "_id"
-        const val TIME_ADD: String = "TIME_ADD"
-        const val TIME_CHANGE: String = "TIME_CHANGE"
-        const val TIME_MEASUREMENT: String = "TIME_MEASUREMENT"
-        const val WEIGHT_OF_GRAM: String = "WEIGHT_OF_GRAM"
-        const val WEIGHT_TO_DISPLAY_IN_KILOGRAMS: String = "WEIGHT_TO_DISPLAY_IN_KILOGRAMS"
-        const val WEIGHT_TO_DISPLAY_IN_FUNT: String = "WEIGHT_TO_DISPLAY_IN_FUNT"
-        const val WEIGHT_TO_DISPLAY_IN_STONE: String = "WEIGHT_TO_DISPLAY_IN_STONE"
     }
 
     @PrimaryKey(autoincrement = true)
@@ -81,7 +63,7 @@ class WeightItem : BaseSyncableProviderModel {
     }
 
     fun setWeight(weight: Weight) {
-        this.weight = weight;
+        this.weight = weight
         weightOfGram = weight.grams
     }
 
@@ -111,7 +93,7 @@ class WeightItem : BaseSyncableProviderModel {
         weightToDisplayInStone = WeightFactory.getWeight(Weight.Unit.STONE, weightOfGram)
                 .getWeightValueWithUnitShort(FlowManager.getContext())
 
-        Log.d(TAG, "save")
+        Log.d(TAG, "save: " + toString())
         return super.save()
     }
 
@@ -122,6 +104,8 @@ class WeightItem : BaseSyncableProviderModel {
         timeAdd = Date(cursor.getLong(AppDatabase.WeightProvider.KEY_INT_TIME_ADD))
         timeChange = Date(cursor.getLong(AppDatabase.WeightProvider.KEY_INT_TIME_CHANGE))
         timeMeasurement = Date(cursor.getLong(AppDatabase.WeightProvider.KEY_INT_TIME_MEASUREMENT))
+        weightOfGram = cursor.getLong(AppDatabase.WeightProvider.KEY_INT_WEIGHT_OF_GRAM)
+        weight.grams = weightOfGram
 
         weightToDisplayInKilograms = cursor.getString(AppDatabase.WeightProvider.KEY_INT_WEIGHT_TO_DISPLAY_IN_KILOGRAMS)
         weightToDisplayInFunt = cursor.getString(AppDatabase.WeightProvider.KEY_INT_WEIGHT_TO_DISPLAY_IN_FUNT)
@@ -143,4 +127,41 @@ class WeightItem : BaseSyncableProviderModel {
                     " weightToDisplayInFunt='$weightToDisplayInFunt', " +
                     "weightToDisplayInStone='$weightToDisplayInStone', " +
                     "weight=$weight)"
+
+    constructor(source: Parcel) : this(
+    )
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {}
+
+    companion object {
+        private const val TAG = "WeightItem"
+
+        private const val URL_ALL = WeightContentProvider.URL_ALL
+
+        const val TABLE_NAME: String = "WeightItems"
+
+        const val _ID: String = "_id"
+
+        const val TIME_ADD: String = "TIME_ADD"
+
+        const val TIME_CHANGE: String = "TIME_CHANGE"
+
+        const val TIME_MEASUREMENT: String = "TIME_MEASUREMENT"
+
+        const val WEIGHT_OF_GRAM: String = "WEIGHT_OF_GRAM"
+
+        const val WEIGHT_TO_DISPLAY_IN_KILOGRAMS: String = "WEIGHT_TO_DISPLAY_IN_KILOGRAMS"
+
+        const val WEIGHT_TO_DISPLAY_IN_FUNT: String = "WEIGHT_TO_DISPLAY_IN_FUNT"
+
+        const val WEIGHT_TO_DISPLAY_IN_STONE: String = "WEIGHT_TO_DISPLAY_IN_STONE"
+
+        @JvmField
+        val CREATOR: Parcelable.Creator<WeightItem> = object : Parcelable.Creator<WeightItem> {
+            override fun createFromParcel(source: Parcel): WeightItem = WeightItem(source)
+            override fun newArray(size: Int): Array<WeightItem?> = arrayOfNulls(size)
+        }
+    }
 }

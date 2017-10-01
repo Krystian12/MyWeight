@@ -16,11 +16,6 @@ object WeightManager {
 
     private val TAG = "WeightManager"
 
-    fun addEntries(weightItem: WeightItem) {
-        Log.d(TAG, "addEntries: " + weightItem.toString())
-        weightItem.save()
-    }
-
     fun getLastWeight(context: Context): WeightItem? {
         val contentResolver = context.contentResolver
 

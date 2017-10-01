@@ -4,10 +4,8 @@ import android.content.ContentProvider
 import android.content.ContentValues
 import android.content.UriMatcher
 import android.database.Cursor
-import android.database.SQLException
 import android.net.Uri
 import android.util.Log
-import com.raizlabs.android.dbflow.annotation.ConflictAction
 import com.raizlabs.android.dbflow.config.FlowConfig
 import com.raizlabs.android.dbflow.config.FlowManager
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper
@@ -92,28 +90,23 @@ class WeightContentProvider : ContentProvider() {
 
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
         Log.d(TAG, "insert UriL " + uri.toString())
-//        val adapter = FlowManager.getModelAdapter(FlowManager.getTableClassForName(AppDatabase.NAME, WeightItem.TABLE_NAME))
-//        val conflictAction = ConflictAction.getSQLiteDatabaseAlgorithmInt(adapter.insertOnConflictAction)
-//        val rowID = db!!.insertWithOnConflict(WeightItem.TABLE_NAME, "", values!!, conflictAction)
-
-//        if (rowID > 0) {
         notifyChange()
-            return uri
-//        }
-//        throw SQLException("Failed to add a record into " + uri)
+        return uri
     }
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
         Log.d(TAG, "WeightContentProvider delete")
-        return 0
+        notifyChange()
+        return 1
     }
 
     override fun update(uri: Uri, values: ContentValues?, selection: String?, selectionArgs: Array<String>?): Int {
         Log.d(TAG, "WeightContentProvider update")
-        return 0
+        notifyChange()
+        return 1
     }
 
-    private fun notifyChange(){
+    private fun notifyChange() {
         context!!.contentResolver.notifyChange(AppDatabase.WeightProvider.CONTENT_URI_ALL, null)
         context!!.contentResolver.notifyChange(AppDatabase.WeightProvider.CONTENT_URI_ALL_ORDER_BY_DATE_WEIGHT, null)
     }

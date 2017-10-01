@@ -1,6 +1,8 @@
 package krystian.myweight.ui.weight
 
 import android.content.Context
+import android.os.Parcel
+import android.os.Parcelable
 import krystian.myweight.R
 
 

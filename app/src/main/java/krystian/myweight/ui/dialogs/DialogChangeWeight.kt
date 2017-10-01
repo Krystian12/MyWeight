@@ -15,10 +15,12 @@ import krystian.myweight.ui.weight.WeightManager
 import krystian.myweight.unit.DateFormater
 import java.util.*
 
+
 /**
  * Created by Krystian on 2015-12-30.
  */
 class DialogChangeWeight : DialogFragment() {
+
 
     private inner class ViewHolder {
         var title: TextView? = null
@@ -33,6 +35,27 @@ class DialogChangeWeight : DialogFragment() {
 
     private var unitAdapter: ArrayAdapter<String>? = null
     private var datePickerDialog: DatePickerDialog? = null
+
+    private var weightItem: WeightItem? = null
+
+    private var keyboardStatus: Boolean = false
+
+    companion object {
+        private val KEY_WEIGHT_ITEM: String = "key_weight_item"
+
+        fun newInstance(): DialogChangeWeight {
+            return DialogChangeWeight()
+        }
+
+        fun newInstance(weightItem: WeightItem): DialogChangeWeight {
+            var dialogChangeWeight = DialogChangeWeight()
+            var bundle = Bundle()
+            bundle.putParcelable(KEY_WEIGHT_ITEM, weightItem)
+
+            dialogChangeWeight.arguments = bundle
+            return dialogChangeWeight
+        }
+    }
 
     private var date: Date = Date()
         set(date) {
@@ -59,9 +82,14 @@ class DialogChangeWeight : DialogFragment() {
         viewHolder.buttonDone = view.findViewById(R.id.dialog_inside_button_done) as TextView
         viewHolder.buttonCancel = view.findViewById(R.id.dialog_inside_button_cancel) as TextView
 
+        if (arguments != null) {
+            weightItem = arguments.getParcelable(KEY_WEIGHT_ITEM)
+        }
+
         intButtons()
         intWeightUnit()
         intWeightDate()
+        setWeightItem(weightItem)
     }
 
     private fun intButtons() {
@@ -105,26 +133,34 @@ class DialogChangeWeight : DialogFragment() {
             }
         }
 
-    fun setTitle(title: String) {
+    private fun setWeightItem(weightItem: WeightItem?) {
+        if (weightItem != null) {
+            setWeight(weightItem.getWeight())
+            date = weightItem.timeMeasurement
+        }
+    }
+
+    private fun setTitle(title: String) {
         viewHolder.title!!.text = title
     }
 
-    fun setWeight(weight: Weight) {
+    private fun setWeight(weight: Weight) {
         viewHolder.weightValue!!.setText(weight.getWeightValueFormat())
     }
 
-    fun done() {
-        val weightItem = WeightItem()
+    private fun done() {
         val weight = WeightFactory.getWeight(getUnit())
         weight.setWeightValueFormat(viewHolder.weightValue!!.text.toString())
-        weightItem.setWeight(weight)
-        weightItem.timeChange = Calendar.getInstance().time
-        weightItem.timeMeasurement = date
+        if (weightItem == null) {
+            weightItem = WeightItem()
+        }
+        weightItem!!.setWeight(weight)
+        weightItem!!.timeChange = Calendar.getInstance().time
+        weightItem!!.timeMeasurement = date
 
-        WeightManager.addEntries(weightItem)
+        weightItem!!.save()
         dismiss()
     }
 
     private fun getUnit(): Weight.Unit = unit
-
 }
